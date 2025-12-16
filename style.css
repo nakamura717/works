@@ -1,0 +1,30 @@
+body {
+    background-color: #f7c1e4;
+
+    main {
+        text-align: center;
+        background-color: #ffff;
+        border-radius: 10px;
+        margin: 20px;
+
+        .aaa {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            gap: 100px;
+
+            .name {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                /* 縦方向の均等配置 */
+                height: 300px;
+                /* 高さを指定 */
+
+            }
+        }
+    }
+
+}
