@@ -37,10 +37,12 @@
         ?>
 
         <!-- AJAX リクエストの場合のみ resultArea 断片を返す -->
-        <?php if (isset($_POST['ajax']) && $_POST['ajax'] == '1'): 
+        <?php if (isset($_POST['ajax']) && $_POST['ajax'] == '1'):
             // Clear any output buffering so we return only the fragment.
-            while (ob_get_level()) { ob_end_clean(); }
-            ?>
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
+        ?>
             <div id="resultArea">
                 <div class="aaa">
                     <div class="name">
@@ -62,32 +64,38 @@
                 <hr>
                 <p>この推し（推しキャラ）を登録しますか？</p>
                 <?php
-                    // Decide form action based on GET flags, but always render a registration form
-                    if (isset($_GET['SUB1'])) {
-                        $regAction = 'Account_display.php';
-                    } elseif (isset($_GET['SUB2'])) {
-                        $regAction = 'aaaa.php';
-                    }
+                // Decide form action based on GET flags, but always render a registration form
+                $action_file = '';
+                if (isset($_GET['SUB1'])) {
+                    $action_file = 'profile.php';
+                } elseif (isset($_GET['SUB2'])) {
+                    $action_file = 'aaa.php';
+                }
+                if ($action_file !== '') {
                 ?>
-                <form action="<?php echo htmlspecialchars($regAction, ENT_QUOTES); ?>" method="post">
-                    <input type="hidden" name="charcterName" value="<?php echo htmlspecialchars($charcterName, ENT_QUOTES); ?>">
-                    <input type="hidden" name="animeName" value="<?php echo htmlspecialchars($animeName, ENT_QUOTES); ?>">
-                    <input type="hidden" name="charcterImage" value="<?php echo htmlspecialchars($charcterImage, ENT_QUOTES); ?>">
-                    <button type="submit" name="登録完了">登録する</button>
-                </form>
+                    <form action="<?php echo htmlspecialchars($action_file, ENT_QUOTES); ?>" method="post">
+                        <input type="hidden" name="charcterName" value="<?php echo htmlspecialchars($charcterName, ENT_QUOTES); ?>">
+                        <input type="hidden" name="animeName" value="<?php echo htmlspecialchars($animeName, ENT_QUOTES); ?>">
+                        <input type="hidden" name="charcterImage" value="<?php echo htmlspecialchars($charcterImage, ENT_QUOTES); ?>">
+                        <button type="submit" name="登録完了">登録する</button>
+                    </form>
+                <?php
+                } else {
+                    // どちらの条件も満たされない場合は、登録ボタンは表示しない方が安全です。
+                    echo '<p>登録先が設定されていません。</p>';
+                }
+                ?>
             </div>
-        <?php exit; 
+
+        <?php exit;
         endif; ?>
 
-                                // Decide form action based on GET or POST SUB flags (AJAX posts may carry SUB via JS)
-                                if (isset($_GET['SUB1']) || isset($_POST['SUB1'])) {
-                                    $regAction = 'Account_display.php';
-                                } elseif (isset($_GET['SUB2']) || isset($_POST['SUB2'])) {
-                                    $regAction = 'aaaa.php';
-                                } else {
-                                    // default action when no flag is present
-                                    $regAction = 'プロフィール画面へ';
-                                }
+        <!-- 通常のページ表示 -->
+        <div id="resultArea">
+            <div class="aaa">
+                <div class="name">
+                    <h3>キャラ名</h3>
+                    <form id="searchForm" method="post">
                         <input type="text" id="searchInput" name="search" class="abc" placeholder="キャラ名を入力">
                         <br>
                         <button type="submit">検索</button>
@@ -112,7 +120,7 @@
             <br><a href="Character_entry.php?SUB1=1">別のキャラを検索</a>
             <p><a href="Account_display.php">アカウント画面へ戻る</a></p>
         <?php
-        }elseif (isset($_GET['SUB2'])) {
+        } elseif (isset($_GET['SUB2'])) {
         ?>
             <p><a href="diagnosis.php">診断画面へ戻る</a></p>
         <?php

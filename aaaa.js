@@ -98,19 +98,10 @@ function sendToPhp(charName, animeName, charImage) {
     formData.append('推し活診断', '1'); // どのボタンが押されたかを示す
     // 部分更新フラグ
     formData.append('ajax', '1');
-    // If the current page has SUB flags in the query string (e.g. ?SUB1=1), forward them
-    try {
-        var params = new URLSearchParams(window.location.search || '');
-        params.forEach(function (value, key) {
-            if (/^SUB/i.test(key)) {
-                formData.append(key, value);
-            }
-        });
-    } catch (e) {
-        console.warn('[aaaa.js] Could not forward SUB params', e);
-    }
 
-    fetch('Character_entry.php', {
+    // Forward current query string (e.g. ?SUB1=1) so server can detect SUB flags on GET
+    var targetUrl = 'Character_entry.php' + (window.location.search || '');
+    fetch(targetUrl, {
         method: 'POST',
         body: formData
     })
